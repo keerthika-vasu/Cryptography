@@ -1,0 +1,35 @@
+def playfair_encrypt(msg, key):
+    key = ''.join(dict.fromkeys(key.upper().replace('J', 'I')))
+    alpha = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'
+    key += ''.join(c for c in alpha if c not in key)
+    mtx = [list(key[i:i+5]) for i in range(0, 25, 5)]
+
+    def pos(c):
+        for i in range(5):
+            if c in mtx[i]: return i, mtx[i].index(c)
+
+    msg = msg.upper().replace('J', 'I')
+    msg = ''.join(filter(str.isalpha, msg))
+    i, pair = 0, []
+    while i < len(msg):
+        a = msg[i]
+        b = msg[i+1] if i+1 < len(msg) else 'X'
+        if a == b: b = 'X'; i += 1
+        else: i += 2
+        pair.append((a, b))
+    if len(msg) % 2: pair.append((msg[-1], 'X'))
+
+    res = ''
+    for a, b in pair:
+        ax, ay = pos(a)
+        bx, by = pos(b)
+        if ax == bx:
+            res += mtx[ax][(ay+1)%5] + mtx[bx][(by+1)%5]
+        elif ay == by:
+            res += mtx[(ax+1)%5][ay] + mtx[(bx+1)%5][by]
+        else:
+            res += mtx[ax][by] + mtx[bx][ay]
+    return res
+
+# Example
+print("Encrypted:", playfair_encrypt("HELLO", "MONARCHY"))
