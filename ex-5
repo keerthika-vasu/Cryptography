@@ -1,0 +1,18 @@
+def rail_fence_encrypt(text, rails):
+    fence = [''] * rails
+    rail, dir = 0, 1
+    for char in text:
+        fence[rail] += char
+        rail += dir
+        if rail == 0 or rail == rails - 1: dir *= -1
+    return ''.join(fence)
+
+print("Rail Fence Encrypted:", rail_fence_encrypt("HELLOWORLD", 3))
+def row_col_encrypt(text, key):
+    col = len(key)
+    text += 'X' * ((col - len(text) % col) % col)
+    rows = [text[i:i+col] for i in range(0, len(text), col)]
+    order = sorted(range(col), key=lambda k: key[k])
+    return ''.join(''.join(row[i] for row in rows) for i in order)
+
+print("Row-Column Encrypted:", row_col_encrypt("HELLOWORLD", "4312"))
