@@ -1,0 +1,14 @@
+from Crypto.Cipher import DES
+from Crypto.Util.Padding import pad, unpad
+
+key = b'8bytekey'               # 8 bytes key
+text = b'HELLO123'              # Plaintext (must be bytes)
+
+cipher = DES.new(key, DES.MODE_ECB)
+
+encrypted = cipher.encrypt(pad(text, 8))
+print("Encrypted:", encrypted)
+
+decipher = DES.new(key, DES.MODE_ECB)
+decrypted = unpad(decipher.decrypt(encrypted), 8)
+print("Decrypted:", decrypted)
