@@ -1,0 +1,18 @@
+def des_encrypt(text, key):
+    encrypted = ""
+    for i in range(len(text)):
+        encrypted += chr(ord(text[i]) ^ ord(key[i % len(key)]))  # XOR encryption
+    return encrypted
+
+def des_decrypt(encrypted, key):
+    return des_encrypt(encrypted, key)  # XOR is reversible
+
+# Example
+plaintext = "HELLODES"
+key = "8bytekey"
+    
+encrypted = des_encrypt(plaintext, key)
+print("Encrypted (hex):", ''.join(f'{ord(c):02x}' for c in encrypted))  # Display in hex
+
+decrypted = des_decrypt(encrypted, key)
+print("Decrypted:", decrypted)
