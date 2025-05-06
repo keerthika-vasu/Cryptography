@@ -1,0 +1,15 @@
+import hashlib
+
+
+def generate_sha1_hash(text):
+
+    hash_object = hashlib.sha1(text.encode())
+    sha1_hash = hash_object.hexdigest()
+    return sha1_hash
+
+# Example usage
+message = "HelloWorld"
+hashed = generate_sha1_hash(message)
+
+print("Original Message:", message)
+print("SHA-1 Hash:", hashed)
