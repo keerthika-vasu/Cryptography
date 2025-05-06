@@ -1,0 +1,19 @@
+# Prime number and primitive root
+p = 23
+g = 5
+
+# Private keys (chosen secretly)
+a = 6  # Alice
+b = 15 # Bob
+
+# Public keys (shared openly)
+A = pow(g, a, p)  # Alice's public key
+B = pow(g, b, p)  # Bob's public key
+
+# Shared secret (calculated independently)
+secret_a = pow(B, a, p)
+secret_b = pow(A, b, p)
+
+# Output
+print("Shared Secret (Alice):", secret_a)
+print("Shared Secret (Bob):", secret_b)
