@@ -1,0 +1,23 @@
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import hashlib
+
+def cbc_mac(key, message):
+    cipher = AES.new(key, AES.MODE_CBC, iv=b'\x00' * 16)
+    padded_message = pad(message.encode(), AES.block_size)
+    mac = cipher.encrypt(padded_message)[-AES.block_size:]
+    return mac
+
+# Key and message X
+key = b'Sixteen byte key'
+X = "Hello1234"
+
+# CBC MAC for one-block message X
+T = cbc_mac(key, X)
+print("MAC for X:", T.hex())
+
+# Adversary computes MAC for X || (X ⊕ T)
+X_xor_T = ''.join(chr(ord(a) ^ ord(b)) for a, b in zip(X, T.decode()[:len(X)]))
+message = X + X_xor_T
+mac_xt = cbc_mac(key, message)
+print("MAC for X || (X ⊕ T):", mac_xt.hex())
