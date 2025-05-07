@@ -1,0 +1,21 @@
+from Crypto.Cipher import DES3
+from Crypto.Util.Padding import pad, unpad
+from Crypto.Random import get_random_bytes
+
+# Key and IV
+key = DES3.adjust_key_parity(get_random_bytes(24))  # 3DES requires a 24-byte key
+iv = get_random_bytes(8)
+
+# Data to encrypt
+data = b"Encrypt this message using 3DES CBC!"
+
+# Encrypt
+cipher_encrypt = DES3.new(key, DES3.MODE_CBC, iv)
+ciphertext = cipher_encrypt.encrypt(pad(data, DES3.block_size))
+
+# Decrypt
+cipher_decrypt = DES3.new(key, DES3.MODE_CBC, iv)
+plaintext = unpad(cipher_decrypt.decrypt(ciphertext), DES3.block_size)
+
+print("Ciphertext:", ciphertext.hex())
+print("Decrypted:", plaintext.decode())
