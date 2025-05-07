@@ -1,0 +1,16 @@
+def encrypt(m, e, n):
+    return pow(m, e, n)
+
+# Simulate known RSA public key
+e = 17
+n = 3233  # Large enough to seem secure
+
+# Build lookup table for A-Z (0–25)
+lookup = {encrypt(m, e, n): chr(m + ord('A')) for m in range(26)}
+
+# Intercepted ciphertexts (simulate Alice’s encrypted message)
+ciphertext_blocks = [encrypt(ord(c) - ord('A'), e, n) for c in "HELLO"]
+
+# Attacker decrypts using lookup table
+decrypted = ''.join(lookup[c] for c in ciphertext_blocks)
+print("Decrypted:", decrypted)
