@@ -1,0 +1,32 @@
+import math
+
+# Given public key
+n = 3599  # n = p * q
+e = 31
+
+# Let's say someone gives a plaintext block m
+m = 177  # Assume this shares a factor with n
+
+# Try to factor n using GCD
+g = math.gcd(m, n)
+
+if 1 < g < n:
+    p = g
+    q = n // g
+    phi = (p - 1) * (q - 1)
+
+    # Compute private key d
+    def modinv(a, m):
+        def egcd(a, b):
+            if b == 0: return a, 1, 0
+            g, y, x = egcd(b, a % b)
+            return g, x, y - (a // b) * x
+        g, x, _ = egcd(a, m)
+        return x % m if g == 1 else None
+
+    d = modinv(e, phi)
+
+    print(f"Found p = {p}, q = {q}")
+    print(f"Private key d = {d}")
+else:
+    print("No common factor found. RSA still secure.")
