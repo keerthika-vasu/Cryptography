@@ -1,0 +1,18 @@
+import random
+
+def simulate_sha3():
+    state = [[0] * 64 for _ in range(25)]
+    rate_lanes = 12  # 50% capacity, 50% rate (25 lanes total)
+    for i in range(rate_lanes, 25):
+        state[i] = [random.choice([0, 1]) for _ in range(64)]
+
+    steps = 0
+    while not all(any(bit == 1 for bit in lane) for lane in state[:rate_lanes]):
+        steps += 1
+        for i in range(rate_lanes):  # Flip random bits in capacity lanes
+            state[i][random.randint(0, 63)] = 1
+    
+    return steps
+
+steps_needed = simulate_sha3()
+print(steps_needed)
