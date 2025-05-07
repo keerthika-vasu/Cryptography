@@ -1,0 +1,18 @@
+# Public values
+a = 5  # primitive root mod q
+q = 23  # prime modulus
+
+# Alice and Bob's secret values
+alice_secret = 6
+bob_secret = 15
+
+# Exchange values
+alice_public = pow(a, alice_secret, q)
+bob_public = pow(a, bob_secret, q)
+
+# Shared key
+alice_key = pow(bob_public, alice_secret, q)
+bob_key = pow(alice_public, bob_secret, q)
+
+print("Shared key (Alice):", alice_key)
+print("Shared key (Bob):", bob_key)
