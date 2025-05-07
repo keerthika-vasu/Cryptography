@@ -1,0 +1,24 @@
+def gcd_ext(a, b):
+    if b == 0: return a, 1, 0
+    g, x1, y1 = gcd_ext(b, a % b)
+    return g, y1, x1 - (a // b) * y1
+
+def modinv(e, phi):
+    g, x, _ = gcd_ext(e, phi)
+    return x % phi if g == 1 else None
+
+def find_factors(n):
+    for i in range(2, int(n**0.5)+1):
+        if n % i == 0:
+            return i, n // i
+
+# Given
+e, n = 31, 3599
+p, q = find_factors(n)
+phi = (p - 1) * (q - 1)
+d = modinv(e, phi)
+
+print(f"Public Key (e, n): ({e}, {n})")
+print(f"Private Key d: {d}")
+print(f"Factors p, q: {p}, {q}")
+print(f"φ(n): {phi}")
