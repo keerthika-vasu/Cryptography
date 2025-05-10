@@ -1,0 +1,14 @@
+from cryptography.hazmat.primitives.asymmetric import dsa
+from cryptography.hazmat.primitives import hashes, serialization
+
+# Generate private key
+private_key = dsa.generate_private_key(key_size=1024)
+
+# Sign the same message twice
+message = b"Hello, DSA"
+signature1 = private_key.sign(message, hashes.SHA256())
+signature2 = private_key.sign(message, hashes.SHA256())
+
+print("Signature 1:", signature1.hex())
+print("Signature 2:", signature2.hex())
+print("Are signatures different?", signature1 != signature2)
