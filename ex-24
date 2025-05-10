@@ -1,0 +1,12 @@
+import math
+
+# Number of unique letters in Playfair (I/J merged)
+n = 25
+
+# Number of possible keys = 25! (all permutations of the 25 letters)
+keyspace = math.factorial(n)
+
+# Convert to power of 2: log2(25!)
+approx_power_of_2 = math.log2(keyspace)
+
+print(f"Possible keys ≈ 2^{approx_power_of_2:.2f}")
