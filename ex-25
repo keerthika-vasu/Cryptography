@@ -1,0 +1,28 @@
+import numpy as np
+from sympy import Matrix
+
+# Convert letter to number (A=0,...Z=25)
+def text_to_nums(text):
+    return [ord(c) - ord('A') for c in text.upper() if c.isalpha()]
+
+# Build matrix from pairs
+def build_matrix(pairs):
+    return np.array(pairs).reshape(2, 2).T
+
+# Inverse mod 26 using sympy
+def mod26_inv(matrix):
+    return Matrix(matrix).inv_mod(26)
+
+# Known plaintext-ciphertext pairs
+plaintext = "HELP"
+ciphertext = "ZEBB"
+
+P = build_matrix(text_to_nums(plaintext))     # 2x2 plaintext matrix
+C = build_matrix(text_to_nums(ciphertext))    # 2x2 ciphertext matrix
+
+# Solve for key: K = C * P_inv mod 26
+P_inv = mod26_inv(P)
+K = (Matrix(C) * P_inv) % 26
+
+print("Recovered Hill Cipher Key Matrix:")
+print(np.array(K).astype(int))
