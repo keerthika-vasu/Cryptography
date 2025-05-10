@@ -1,0 +1,33 @@
+from collections import Counter
+import string
+
+# Standard English letter frequency (approx.)
+ENGLISH_FREQ = "ETAOINSHRDLCUMWFGYPBVKJXQZ"
+
+# Function to score text based on frequency match
+def score(text):
+    freq = Counter(c for c in text.upper() if c.isalpha())
+    most_common = ''.join([pair[0] for pair in freq.most_common()])
+    return sum([ENGLISH_FREQ.index(c) if c in ENGLISH_FREQ else 26 for c in most_common[:6]])
+
+# Frequency attack
+def frequency_attack(ciphertext, top_n=10):
+    cipher_freq = Counter(c for c in ciphertext.upper() if c.isalpha())
+    cipher_letters = [pair[0] for pair in cipher_freq.most_common()]
+    guesses = []
+
+    for i in range(top_n):
+        mapping = dict(zip(cipher_letters, ENGLISH_FREQ[i:] + ENGLISH_FREQ[:i]))
+        plaintext = ''.join([mapping.get(c.upper(), c) for c in ciphertext])
+        guesses.append((plaintext, score(plaintext)))
+
+    guesses.sort(key=lambda x: x[1])  # Lower score = better match
+    return [text for text, _ in guesses]
+
+# Example usage
+ciphertext = "GSRH RH Z HVXVGRLM ULI ZMW"
+top_plaintexts = frequency_attack(ciphertext, top_n=10)
+
+print("\nTop 10 Possible Plaintexts:")
+for i, text in enumerate(top_plaintexts, 1):
+    print(f"{i}. {text}")
