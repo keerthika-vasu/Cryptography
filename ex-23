@@ -1,0 +1,22 @@
+from collections import Counter
+
+# English letter frequency (most to least common)
+ENGLISH_FREQ = "ETAOINSHRDLCUMWFGYPBVKJXQZ"
+
+def frequency_attack(ciphertext, top_n=10):
+    ciphertext = ciphertext.upper()
+    cipher_freq = [c for c, _ in Counter(filter(str.isalpha, ciphertext)).most_common()]
+    results = []
+    for i in range(top_n):
+        guess_map = dict(zip(cipher_freq, ENGLISH_FREQ[i:] + ENGLISH_FREQ[:i]))
+        guess = ''.join(guess_map.get(c, c) for c in ciphertext)
+        results.append(guess)
+    return results
+
+# UI
+ciphertext = input("Enter ciphertext: ")
+top_n = int(input("Top how many plaintexts to display? "))
+
+print("\nTop guesses:")
+for i, guess in enumerate(frequency_attack(ciphertext, top_n), 1):
+    print(f"{i}. {guess}")
